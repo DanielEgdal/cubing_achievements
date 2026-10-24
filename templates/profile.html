@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import award_status with context %}
+{% block title %}{{ person.name }}{% endblock %}
+{% block content %}
+<a class="back-link" href="{{ url_for('competitors_page') }}">← Alle deltagere</a>
+<div class="profile-header">
+  <span class="avatar large" aria-hidden="true">{{ (person.name or '?')[0] }}</span>
+  <div><p class="eyebrow">Deltagerprofil</p><h1>{{ person.name }}</h1><p>{{ person.wca_id }} · {{ person.nationality }}</p><a href="https://www.worldcubeassociation.org/persons/{{ person.wca_id|urlencode }}" target="_blank" rel="noopener noreferrer">Se WCA-profil ↗</a></div>
+  <div class="stat"><strong>{{ entries|length }}</strong><span>bedrifter</span></div>
+</div>
+<h2>Opnåede bedrifter</h2>
+{% if entries %}
+<div class="achievement-grid">
+{% for entry in entries %}
+  <article class="achievement-card">
+    <p class="eyebrow">{{ entry.category }}</p>
+    <h3><a href="{{ url_for('overview', achievement=entry.achievement_id) }}">{{ entry.achievement_name }}</a></h3>
+    <p>Opnået {{ entry.date_achieved|danish_date }}</p>
+    <p>Konkurrence: {{ entry.achieved_at_competition or 'Ikke angivet' }}</p>
+    {{ award_status(entry) }}
+  </article>
+{% endfor %}
+</div>
+{% else %}
+<div class="empty-state"><h2>Ingen beregnede bedrifter endnu</h2><p>Hvis deltageren lige er tilføjet, vises bedrifter efter næste beregning. Ellers er ingen af de aktuelle bedrifter opnået.</p></div>
+{% endif %}
+{% endblock %}

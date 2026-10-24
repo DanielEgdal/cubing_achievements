@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<section class="empty-state"><p class="eyebrow">Noget gik galt</p><h1>{{ title }}</h1><p>{{ message }}</p><div class="actions centered"><a class="button" href="{{ url_for('overview') }}">Til oversigten</a><a class="button secondary" href="{{ url_for('admin.runs') }}">Se driftsstatus</a></div></section>
+{% endblock %}

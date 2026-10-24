@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import award_status, pagination with context %}
+{% block title %}{{ 'Overrækkelser' if administration else 'Bedrifter' }}{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <p class="eyebrow">{{ 'Administration' if administration else 'Hver milepæl tæller' }}</p>
+  <h1>{{ 'Overrækkelser og diplomer' if administration else 'Store øjeblikke. Nye milepæle.' }}</h1>
+  <p class="lead">{{ 'Markér overrækkelser og udskriv diplomer. Nyeste opnåede bedrifter vises først.' if administration else 'Udforsk deltagernes bedrifter på tværs af resultater og konkurrencer.' }}</p>
+</div>
+<section class="panel" aria-label="Filtre">
+  <form method="get" class="filters">
+    <label>Kategori
+      <select name="category" data-category-filter>
+        <option value="">Alle kategorier</option>
+        {% for option in categories %}<option value="{{ option }}" {% if option == category %}selected{% endif %}>{{ option }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Bedrift
+      <select name="achievement">
+        <option value="">Alle bedrifter</option>
+        {% for option in choices %}<option value="{{ option.achievement_id }}" {% if option.achievement_id == selected_achievement %}selected{% endif %}>{{ option.name }}</option>{% endfor %}
+      </select>
+    </label>
+    {% if administration %}
+    <label>Overrækkelse
+      <select name="status">
+        <option value="all" {% if status == 'all' %}selected{% endif %}>Alle</option>
+        <option value="unawarded" {% if status == 'unawarded' %}selected{% endif %}>Ikke overrakt</option>
+        <option value="awarded" {% if status == 'awarded' %}selected{% endif %}>Overrakt</option>
+      </select>
+    </label>
+    {% endif %}
+    <button type="submit">Vis resultater</button>
+    <a class="reset-link" href="{{ url_for(request.endpoint) }}">Nulstil</a>
+  </form>
+</section>
+<div class="section-heading"><h2>{{ 'Opnåede bedrifter' if administration else 'Deltagernes bedrifter' }}</h2><span class="result-count">{{ total }} i alt</span></div>
+{% if entries %}
+<div class="table-wrap">
+  <table>
+    <caption class="visually-hidden">Bedrifter sorteret efter opnået dato, nyeste først</caption>
+    <thead><tr><th scope="col">Bedrift</th><th scope="col">Deltager</th><th scope="col">Opnået</th><th scope="col">Konkurrence</th>{% if administration %}<th scope="col">Overrækkelse</th><th scope="col">Handlinger</th>{% endif %}</tr></thead>
+    <tbody>
+    {% for entry in entries %}
+      <tr>
+        <td><strong>{{ entry.achievement_name }}</strong><span class="cell-detail">{{ entry.category }}</span></td>
+        <td><a href="{{ url_for('profile', wca_id=entry.wca_id) }}">{{ entry.name }}</a><span class="cell-detail">{{ entry.wca_id }}</span></td>
+        <td class="date-cell">{{ entry.date_achieved|danish_date }}</td>
+        <td>{{ entry.achieved_at_competition or 'Ikke angivet' }}</td>
+        {% if administration %}
+        <td>{{ award_status(entry) }}</td>
+        <td><div class="actions">
+          {% if not entry.date_awarded %}
+          <form method="post" action="{{ url_for('admin.award', wca_id=entry.wca_id, achievement_id=entry.achievement_id) }}" data-confirm="Markér denne bedrift som overrakt i dag?">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="category" value="{{ category }}">
+            <input type="hidden" name="achievement" value="{{ selected_achievement }}">
+            <input type="hidden" name="status" value="{{ status }}">
+            <input type="hidden" name="page" value="{{ page }}">
+            <button class="small" type="submit">Markér overrakt</button>
+          </form>
+          {% endif %}
+          <a class="button secondary small" href="{{ url_for('admin.certificate', wca_id=entry.wca_id, achievement_id=entry.achievement_id) }}">Generér diplom</a>
+        </div></td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state"><h2>Ingen bedrifter at vise</h2><p>Prøv andre filtre. Hvis data endnu ikke er beregnet, kan du starte en beregning fra <a href="{{ url_for('admin.runs') }}">driftssiden</a>.</p></div>
+{% endif %}
+{{ pagination(page, pages) }}
+{% endblock %}

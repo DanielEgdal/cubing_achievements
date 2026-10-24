@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Drift{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">Administration</p><h1>Data og beregninger</h1><p class="lead">Opdater WCA-data og beregn derefter deltagernes bedrifter.</p></div>
+<div class="notice">Under en kørsel er datasider og ændringer midlertidigt utilgængelige. Denne side viser status. Lad serveren køre, og start ikke kommandolinjejob samtidig.</div>
+<div class="run-grid">
+  <section class="panel">
+    <p class="eyebrow">Trin 1</p><h2>Opdater WCA-data</h2>
+    <p>Hent og udpak det nyeste officielle eksportdatasæt med det eksisterende batchjob, og genopbyg WCA-databasen.</p>
+    <form method="post" data-confirm="Hent WCA-eksporten og genopbyg databasen? Dette kan tage et stykke tid.">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="operation" value="refresh">
+      <button data-run-control {% if job.status == 'running' %}disabled{% endif %}>Opdater WCA-data</button>
+    </form>
+  </section>
+  <section class="panel">
+    <p class="eyebrow">Trin 2</p><h2>Beregn bedrifter</h2>
+    <p>Opdater deltagere og beregn bedrifter ud fra de nuværende WCA-data. Overrækkelsesdatoer bevares for eksisterende resultater.</p>
+    <form method="post" data-confirm="Start beregning af bedrifter?">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="operation" value="calculate">
+      <label class="checkbox"><input type="checkbox" name="force_all" data-run-control {% if job.status == 'running' %}disabled{% endif %}> Gennemtving alle beregninger</label>
+      <button data-run-control {% if job.status == 'running' %}disabled{% endif %}>Beregn bedrifter</button>
+    </form>
+  </section>
+</div>
+<section class="panel job-panel" data-status-url="{{ url_for('admin.run_status') }}" data-running="{{ 'true' if job.status == 'running' else 'false' }}">
+  <div class="section-heading"><h2>Seneste kørsel</h2><span class="badge" id="job-status" role="status">{{ status_labels[job.status] }}</span></div>
+  <p id="job-operation">{{ 'Opdatering af WCA-data' if job.operation == 'refresh' else 'Beregning af bedrifter' if job.operation == 'calculate' else 'Start en kørsel med knapperne ovenfor.' }}</p>
+  <p id="job-guidance">{% if job.status == 'succeeded' and job.operation == 'refresh' %}WCA-data er opdateret. Start nu beregningen af bedrifter.{% elif job.status == 'failed' %}Kørslen mislykkedes. Se de tekniske detaljer nedenfor. Allerede afsluttede beregninger kan være gemt.{% elif job.status == 'interrupted' %}Kørslen blev afbrudt. Kontrollér data, og start kørslen igen.{% endif %}</p>
+  <p id="poll-error" class="error-text" role="alert"></p>
+  <details {% if job.error %}open{% endif %}><summary>Teknisk output (på engelsk)</summary><pre id="job-output">{{ job.output|join('\n') }}{% if job.error %}{{ '\n' ~ job.error }}{% endif %}</pre></details>
+</section>
+{% endblock %}

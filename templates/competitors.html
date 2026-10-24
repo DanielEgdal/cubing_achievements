@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import pagination with context %}
+{% block title %}Deltagere{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">Menneskene bag resultaterne</p><h1>Find en deltager</h1><p class="lead">Søg efter navn eller WCA-id for at se deltagerens bedrifter.</p></div>
+<form method="get" class="panel filters">
+  <label>Navn eller WCA-id<input type="search" name="search" value="{{ search }}" placeholder="Fx navn eller 2010ABCD01" maxlength="100"></label>
+  <button type="submit">Søg</button>
+  {% if search %}<a class="reset-link" href="{{ url_for('competitors_page') }}">Nulstil</a>{% endif %}
+</form>
+<div class="section-heading"><h2>Deltagere</h2><span class="result-count">{{ total }} i alt</span></div>
+{% if entries %}
+<div class="people-grid">
+{% for person in entries %}
+  <a class="person-card" href="{{ url_for('profile', wca_id=person.wca_id) }}">
+    <span class="avatar" aria-hidden="true">{{ (person.name or '?')[0] }}</span>
+    <span><strong>{{ person.name }}</strong><span class="cell-detail">{{ person.wca_id }} · {{ person.nationality }}</span></span>
+    <span class="card-arrow" aria-hidden="true">↗</span>
+  </a>
+{% endfor %}
+</div>
+{% else %}<div class="empty-state"><h2>Ingen deltagere fundet</h2><p>Prøv et andet navn eller WCA-id.</p></div>{% endif %}
+{{ pagination(page, pages) }}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% macro award_status(entry) -%}
+  {% if entry.date_awarded %}
+    <span class="badge awarded">Overrakt {{ entry.date_awarded|danish_date }}</span>
+  {% else %}
+    <span class="badge pending">Ikke overrakt</span>
+  {% endif %}
+{%- endmacro %}
+
+{% macro pagination(page, pages) %}
+  {% if pages > 1 %}
+  <nav class="pagination" aria-label="Sidenavigation">
+    {% if page > 1 %}<a class="button secondary" href="{{ page_url(page - 1) }}">← Forrige</a>{% endif %}
+    <span>Side {{ page }} af {{ pages }}</span>
+    {% if page < pages %}<a class="button secondary" href="{{ page_url(page + 1) }}">Næste →</a>{% endif %}
+  </nav>
+  {% endif %}
+{% endmacro %}

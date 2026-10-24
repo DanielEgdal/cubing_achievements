@@ -1,0 +1,6 @@
+*.duckdb
+WCA_export/**
+*/*.pyc
+__pycache__/**
+.runtime/
+*.duckdb.wal

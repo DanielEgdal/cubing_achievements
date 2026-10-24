@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Tilføj deltagere{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">Administration</p><h1>Følg flere deltagere</h1><p class="lead">Danske deltagere medtages automatisk. Tilføj andre deltagere via deres WCA-id.</p></div>
+<section class="panel">
+  <h2>Tilføj en deltager</h2>
+  <form method="post" class="filters">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>WCA-id<input name="wca_id" placeholder="2010ABCD01" maxlength="20" required autocapitalize="characters" aria-describedby="tracking-help"></label>
+    <button type="submit">Tilføj deltager</button>
+  </form>
+  <p id="tracking-help" class="muted">WCA-id kontrolleres i dit lokale datasæt. Bedrifter beregnes ved næste kørsel fra <a href="{{ url_for('admin.runs') }}">driftssiden</a>.</p>
+</section>
+<div class="section-heading"><h2>Manuelt tilføjede deltagere</h2><span class="result-count">{{ entries|length }} i alt</span></div>
+{% if entries %}
+<div class="table-wrap"><table><thead><tr><th scope="col">Deltager</th><th scope="col">WCA-id</th><th scope="col">Land</th></tr></thead><tbody>
+{% for entry in entries %}<tr><td><a href="{{ url_for('profile', wca_id=entry.wca_id) }}">{{ entry.name or entry.wca_id }}</a></td><td>{{ entry.wca_id }}</td><td>{{ entry.nationality or 'Ukendt' }}</td></tr>{% endfor %}
+</tbody></table></div>
+{% else %}<div class="empty-state"><p>Ingen manuelt tilføjede deltagere endnu.</p></div>{% endif %}
+{% endblock %}

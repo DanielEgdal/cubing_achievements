@@ -1,0 +1,367 @@
+# Each achievement points to a SQL file returning: wca_id, date_achieved
+# Quote event_id, otherwise YAML reads '333' as a number.
+# SQL files may use named params ($name). Values come from `params`,
+# and event_id is passed automatically if set.
+
+- id: sub10_single_333
+  name: Sub-10 3x3 Single
+  category: Resultater
+  event_id: '333'
+  sql: sql/sub_x_single.sql
+  params:
+    max_time: 1000
+
+- id: sub6_single_333
+  name: Sub-6 3x3 Single
+  category: Resultater
+  event_id: '333'
+  sql: sql/sub_x_single.sql
+  params:
+    max_time: 600
+
+- id: sub10_average_333
+  name: Sub-10 3x3 Snit
+  category: Resultater
+  event_id: '333'
+  sql: sql/sub_x_average.sql
+  params:
+    max_time: 1000
+
+- id: sub7_average_333
+  name: Sub-7 3x3 Snit
+  category: Resultater
+  event_id: '333'
+  sql: sql/sub_x_average.sql
+  params:
+    max_time: 700
+
+- id: sub3_average_skewb
+  name: Sub-3 Skewb Snit
+  category: Resultater
+  event_id: 'skewb'
+  sql: sql/sub_x_average.sql
+  params:
+    max_time: 300
+
+- id: sub10_single_oh
+  name: Sub-10 One-Handed Single
+  category: Resultater
+  event_id: '333oh'
+  sql: sql/sub_x_single.sql
+  params:
+    max_time: 1000
+
+- id: podiums1
+  name: Første podieplads
+  category: Podiepladser
+  sql: sql/podiums.sql
+  params:
+    podium_count: 1
+
+- id: podiums10
+  name: 10 podiepladser
+  category: Podiepladser
+  sql: sql/podiums.sql
+  params:
+    podium_count: 10
+  
+- id: podiums100
+  name: 100 podiepladser
+  category: Podiepladser
+  sql: sql/podiums.sql
+  params:
+    podium_count: 100
+
+- id: danish_champs_podiums1
+  name: Første DM podieplads
+  category: Podiepladser
+  sql: sql/danish_champs_podiums.sql
+  params:
+    podium_count: 1
+
+- id: competitions50
+  name: 50 konkurrencer
+  category: Konkurrencer
+  sql: sql/competitions.sql
+  params:
+    competition_count: 50
+
+- id: competitions100
+  name: 100 konkurrencer
+  category: Konkurrencer
+  sql: sql/competitions.sql
+  params:
+    competition_count: 100
+
+- id: competitions200
+  name: 200 konkurrencer
+  category: Konkurrencer
+  sql: sql/competitions.sql
+  params:
+    competition_count: 200
+
+- id: top25_average_333
+  name: Top 25 i Verden - 3x3 Snit
+  category: Top-X Resultater
+  event_id: '333'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: average
+
+- id: top100_average_333
+  name: Top 100 i Verden - 3x3 Snit
+  category: Top-X Resultater
+  event_id: '333'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 100
+    result_type: average
+
+- id: top25_average_222
+  name: Top 25 i Verden - 2x2 Snit
+  category: Top-X Resultater
+  event_id: '222'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: average
+
+- id: top100_average_222
+  name: Top 100 i Verden - 2x2 Snit
+  category: Top-X Resultater
+  event_id: '222'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 100
+    result_type: average
+
+- id: top25_average_444
+  name: Top 25 i Verden - 4x4 Snit
+  category: Top-X Resultater
+  event_id: '444'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: average
+
+- id: top100_average_444
+  name: Top 100 i Verden - 4x4 Snit
+  category: Top-X Resultater
+  event_id: '444'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 100
+    result_type: average
+
+- id: top25_average_555
+  name: Top 25 i Verden - 5x5 Snit
+  category: Top-X Resultater
+  event_id: '555'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: average
+
+- id: top100_average_555
+  name: Top 100 i Verden - 5x5 Snit
+  category: Top-X Resultater
+  event_id: '555'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 100
+    result_type: average
+
+- id: top25_average_666
+  name: Top 25 i Verden - 6x6 Snit
+  category: Top-X Resultater
+  event_id: '666'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: average
+
+- id: top100_average_666
+  name: Top 100 i Verden - 6x6 Snit
+  category: Top-X Resultater
+  event_id: '666'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 100
+    result_type: average
+
+- id: top25_average_777
+  name: Top 25 i Verden - 7x7 Snit
+  category: Top-X Resultater
+  event_id: '777'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: average
+
+- id: top100_average_777
+  name: Top 100 i Verden - 7x7 Snit
+  category: Top-X Resultater
+  event_id: '777'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 100
+    result_type: average
+
+- id: top25_average_oh
+  name: Top 25 i Verden - 3x3 med Én Hånd Snit
+  category: Top-X Resultater
+  event_id: '333oh'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: average
+
+- id: top100_average_oh
+  name: Top 100 i Verden - 3x3 med Én Hånd Snit
+  category: Top-X Resultater
+  event_id: '333oh'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 100
+    result_type: average
+
+- id: top25_average_fm
+  name: Top 25 i Verden - Fewest Moves Snit
+  category: Top-X Resultater
+  event_id: '333fm'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: average
+
+- id: top100_average_fm
+  name: Top 100 i Verden - Fewest Moves Snit
+  category: Top-X Resultater
+  event_id: '333fm'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 100
+    result_type: average
+
+- id: top25_single_3bld
+  name: Top 25 i Verden - 3x3 Blind Single
+  category: Top-X Resultater
+  event_id: '333bf'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: single
+
+- id: top100_single_3bld
+  name: Top 100 i Verden - 3x3 Blind Single
+  category: Top-X Resultater
+  event_id: '333bf'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 100
+    result_type: single
+
+- id: top25_average_skewb
+  name: Top 25 i Verden - Skewb Snit
+  category: Top-X Resultater
+  event_id: 'skewb'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: average
+
+- id: top100_average_skewb
+  name: Top 100 i Verden - Skewb Snit
+  category: Top-X Resultater
+  event_id: 'skewb'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 100
+    result_type: average
+
+- id: top25_average_pyraminx
+  name: Top 25 i Verden - Pyraminx Snit
+  category: Top-X Resultater
+  event_id: 'pyram'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: average
+
+- id: top100_average_pyraminx
+  name: Top 100 i Verden - Pyraminx Snit
+  category: Top-X Resultater
+  event_id: 'pyram'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 100
+    result_type: average
+
+- id: top25_average_mega
+  name: Top 25 i Verden - Megaminx Snit
+  category: Top-X Resultater
+  event_id: 'minx'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: average
+
+- id: top100_average_mega
+  name: Top 100 i Verden - Megaminx Snit
+  category: Top-X Resultater
+  event_id: 'minx'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 100
+    result_type: average
+
+- id: top25_average_square1
+  name: Top 25 i Verden - Square-1 Snit
+  category: Top-X Resultater
+  event_id: 'sq1'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: average
+
+- id: top100_average_square1
+  name: Top 100 i Verden - Square-1 Snit
+  category: Top-X Resultater
+  event_id: 'sq1'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 100
+    result_type: average
+
+- id: top25_single_4bld
+  name: Top 25 i Verden - 4x4 Blind Single
+  category: Top-X Resultater
+  event_id: '444bf'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: single
+
+- id: top25_single_5bld
+  name: Top 25 i Verden - 5x5 Blind Single
+  category: Top-X Resultater
+  event_id: '555bf'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: single
+
+- id: top25_single_mbld
+  name: Top 25 i Verden - Multi Blind Single
+  category: Top-X Resultater
+  event_id: '333mbf'
+  sql: sql/top_x_ranking.sql
+  params:
+    ranking: 25
+    result_type: single
+
+- id: ten_countries
+  name: Deltaget i 10 lande
+  category: Konkurrencer
+  sql: sql/ten_countries.sql

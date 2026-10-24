@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Diplom · {{ entry.name }}{% endblock %}
+{% block content %}
+<div class="print-controls">
+  <a class="back-link" href="{{ url_for('admin.achievements_admin') }}">← Overrækkelser</a>
+  <button type="button" data-print>Udskriv / Gem som PDF</button>
+  <p>Vælg »Gem som PDF« eller en printer. Brug A4 liggende, og slå browserens sidehoveder og sidefødder fra, så webadresse og udskriftsdato ikke kommer med.</p>
+</div>
+<article class="certificate" aria-label="Diplom">
+  <div class="certificate-inner">
+    <p class="certificate-kicker">Dansk cubing</p>
+    <h1>Diplom</h1>
+    <p class="certificate-intro">Dette diplom tildeles</p>
+    <h2 class="recipient">{{ entry.name }}</h2>
+    <p class="certificate-id">{{ entry.wca_id }}</p>
+    <p class="certificate-intro">for at have opnået</p>
+    <h3>{{ entry.achievement_name }}</h3>
+    <p class="certificate-date">Opnået {{ entry.date_achieved|danish_date }}{% if entry.achieved_at_competition %}<br>ved {{ entry.achieved_at_competition }}{% endif %}</p>
+    <div class="signature"><span>Underskrift</span></div>
+  </div>
+</article>
+{% endblock %}
