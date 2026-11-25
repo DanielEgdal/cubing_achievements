@@ -135,7 +135,9 @@ def runs():
         operation = request.form.get('operation')
         if operation == 'refresh':
             target = current_app.config['WCA_DATABASE']
-            job_function = lambda report: refresh_wca(target, report)
+            replacement_guard = get_jobs().exclusive_database()
+            job_function = lambda report: refresh_wca(
+                target, report, replacement_guard=replacement_guard)
         elif operation == 'calculate':
             force = request.form.get('force_all') == 'on'
             db_file = current_app.config['DATABASE']
@@ -143,7 +145,8 @@ def runs():
             job_function = lambda report: run_achievements(force, db_file, wca_file, report)
         else:
             abort(400, description='Ukendt handling.')
-        job_started = get_jobs().start(operation, job_function) # Attempt to start the background job, later check if it worked.
+        job_started = get_jobs().start(
+            operation, job_function, exclusive=operation != 'refresh')
         if not job_started:
             flash('En kørsel er allerede i gang.', 'error')
         return redirect(url_for('admin.runs'), code=303)
@@ -191,7 +194,7 @@ def create_app(config=None):
                 abort(400, description='Formularen er udløbet. Genindlæs siden og prøv igen.')
         independent = {'admin.runs', 'admin.run_status', 'static', None}
         if request.endpoint not in independent:
-            if not jobs.enter_database():
+            if not jobs.enter_database(write=request.method == 'POST'):
                 abort(503, description='Databasen er optaget. Se driftssiden, og prøv igen senere.')
             g.database_gate = True
 
@@ -203,7 +206,7 @@ def create_app(config=None):
                 context.__exit__(None, None, None)
         finally:
             if g.pop('database_gate', False):
-                jobs.database_lock.release()
+                jobs.leave_database(write=request.method == 'POST')
 
     @app.after_request
     def response_headers(response):

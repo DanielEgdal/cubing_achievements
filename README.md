@@ -45,9 +45,16 @@ does not apply timezone conversion.
 
 ## Jobs and database access
 
-Only one background job runs at a time. During a job, database-dependent pages
-and edits return a temporary-unavailability message; the status page remains
-available with the last 100 lines of technical output.
+Only one background job runs at a time. Browsing requests can run concurrently,
+including while a refresh downloads the export and builds a temporary database.
+The final WCA file replacement blocks new database requests and waits for active
+requests to close their connections. Achievement calculation remains exclusive
+for its entire run. During these exclusive phases, database-dependent pages and
+edits return a temporary-unavailability message. Admin edits are serialized;
+overlapping edits also receive that message, without blocking browsing.
+The status page remains available with the last 100 lines of technical output.
+Coordination is within one application process only. Do not run command-line
+maintenance or multiple server processes against these files concurrently.
 
 The update button calls `scripts/win_download_export.bat` on Windows or
 `scripts/download_export.sh` on other platforms. These scripts own

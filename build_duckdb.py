@@ -1,6 +1,7 @@
 import json
 import os
 import time
+from contextlib import nullcontext
 from datetime import datetime, timezone
 from pathlib import Path
 import duckdb
@@ -30,7 +31,8 @@ def load_table(conn, table, file):
         """)
 
 
-def build_database(source_dir=export_dir, target_file=db_file, report=print):
+def build_database(source_dir=export_dir, target_file=db_file, report=print,
+                   replacement_guard=None):
     source_dir = Path(source_dir)
     target_file = Path(target_file)
     target_file.parent.mkdir(parents=True, exist_ok=True)
@@ -69,7 +71,8 @@ def build_database(source_dir=export_dir, target_file=db_file, report=print):
         report(f"export_metadata: export_date={export_date}, loaded_at={loaded_at}")
     finally: # Always close the connection
         conn.close()
-    os.replace(temporary_file, target_file)
+    with replacement_guard if replacement_guard is not None else nullcontext():
+        os.replace(temporary_file, target_file)
     report('Done!')
 
 

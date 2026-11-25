@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Bedrifter{% endblock %} · Dansk cubing</title>
+  <title>{% block title %}Bedrifter{% endblock %} · Cubingbedrifter</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
   <script src="{{ url_for('static', filename='site.js') }}" defer></script>
 </head>
@@ -11,7 +11,7 @@
   <a class="skip-link" href="#main">Spring til indhold</a>
   <header class="site-header">
     <div class="header-inner">
-      <a class="brand" href="{{ url_for('overview') }}"><span class="brand-mark" aria-hidden="true">◇</span> Dansk cubing <span class="brand-subtitle">Bedrifter</span></a>
+      <a class="brand" href="{{ url_for('overview') }}"><span class="brand-mark" aria-hidden="true">◇</span> Cubingbedrifter <span class="brand-subtitle">WCA data</span></a>
       <nav aria-label="Hovednavigation">
         <a href="{{ url_for('overview') }}" {% if request.endpoint == 'overview' %}aria-current="page"{% endif %}>Oversigt</a>
         <a href="{{ url_for('competitors_page') }}" {% if request.endpoint in ['competitors_page', 'profile'] %}aria-current="page"{% endif %}>Deltagere</a>
@@ -32,6 +32,6 @@
     {% endfor %}
     {% block content %}{% endblock %}
   </main>
-  <footer class="site-footer">Danske cuberes milepæle · Baseret på WCA-resultater</footer>
+  <footer class="site-footer">Danske cuberes bedrifter · Baseret på WCA-resultater</footer>
 </body>
 </html>
